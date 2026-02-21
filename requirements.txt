@@ -1,6 +1,9 @@
+Flask==3.0.2
+gunicorn==21.2.0
+python-dotenv==1.0.1
+SQLAlchemy==2.0.27
+Flask-SQLAlchemy==3.1.1
 docxtpl==0.19.0
 python-docx==1.1.2
 Pillow==10.4.0
 num2words==0.5.13
-Babel==2.14.0
-gunicorn==21.2.0
