@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="h1">Promissória</div>
+  <p class="p">Preencha os dados e anexe a foto do documento. O PDF será gerado e baixado na hora (não salva).</p>
+
+  <div class="card">
+    <form method="post" enctype="multipart/form-data" class="form">
+      <div class="full">
+        <label class="label">Nome</label>
+        <input class="input" name="nome" required>
+      </div>
+
+      <div>
+        <label class="label">CPF</label>
+        <input class="input" name="cpf" required>
+      </div>
+
+      <div class="full">
+        <label class="label">Endereço</label>
+        <input class="input" name="endereco" required>
+      </div>
+
+      <div>
+        <label class="label">Vencimento (digite só números: 200226 → 20/02/26)</label>
+        <input id="data_venc" class="input" name="data_venc" required placeholder="dd/mm/aa" maxlength="8" inputmode="numeric">
+      </div>
+
+      <div class="full">
+        <label class="label">Foto do documento (RG/CNH)</label>
+        <input class="input" type="file" name="imagem_rg" accept="image/*" required>
+      </div>
+
+      <div class="full" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn primary" type="submit">Gerar promissória (PDF)</button>
+        <a class="btn" href="{{ url_for('home') }}">Voltar</a>
+      </div>
+    </form>
+
+    {% if erro %}
+      <div class="hr"></div>
+      <div style="color: var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+    {% endif %}
+  </div>
+{% endblock %}

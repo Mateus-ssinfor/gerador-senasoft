@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="h1">Propostas recentes</div>
+  <p class="p">Últimos 10 dias. Você pode visualizar, baixar, emitir contrato e excluir.</p>
+
+  {% if not items %}
+    <div class="card">
+      <p class="p" style="margin:0;">Nenhuma proposta ainda.</p>
+    </div>
+  {% endif %}
+
+  <div class="table">
+    {% for p in items %}
+      <div class="row">
+        <div>
+          <div class="title">#{{ p.id }} — {{ p.client_name }}</div>
+          <div class="meta">
+            Criada: {{ p.created_at.strftime("%d/%m/%Y %H:%M") }} |
+            Expira: {{ p.expires_at.strftime("%d/%m/%Y %H:%M") }}
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="button" onclick="viewProposal({{ p.id }})">Visualizar</button>
+          <a class="btn" href="{{ url_for('baixar_proposta', proposal_id=p.id) }}">Baixar PDF</a>
+          <a class="btn" href="{{ url_for('contrato', proposal_id=p.id) }}">Emitir contrato</a>
+
+          <form method="post" action="{{ url_for('excluir_proposta', proposal_id=p.id) }}" style="display:inline;">
+            <button class="btn danger" type="submit">Excluir</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+    <a class="btn" href="{{ url_for('home') }}">Voltar</a>
+    <a class="btn" href="{{ url_for('proposta') }}">Nova proposta</a>
+  </div>
+
+  <dialog id="modal">
+    <div class="modal">
+      <h3>Resumo da proposta</h3>
+      <div id="modalMeta" class="small"></div>
+      <div class="hr"></div>
+      <div id="modalPayload" class="mono"></div>
+      <div class="hr"></div>
+      <button class="btn" type="button" onclick="closeModal()">Fechar</button>
+    </div>
+  </dialog>
+{% endblock %}
+
+<div class="full" style="display:flex; gap:10px; flex-wrap:wrap;">
+  <button class="btn primary" type="submit">Gerar e salvar proposta</button>
+  <a class="btn" href="{{ url_for('home') }}">Voltar</a>
+  <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
+</div>

@@ -1,0 +1,60 @@
+﻿<!doctype html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Senasoft</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <div class="app" id="appRoot">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <div class="brand">
+          <img src="{{ url_for('static', filename='img/s.png') }}" alt="Senasoft">
+          <div class="brand-text">Senasoft</div>
+        </div>
+
+        <nav class="nav">
+          <a href="{{ url_for('home') }}"><span>🏠︎</span><span class="label">Início</span></a>
+          <a href="{{ url_for('proposta') }}"><span>✚</span><span class="label">Proposta</span></a>
+          <a href="{{ url_for('recentes') }}"><span>≡</span><span class="label">Recentes</span></a>
+          <a href="{{ url_for('contrato_manual') }}"><span>▦</span><span class="label">Contrato</span></a>
+          <a href="{{ url_for('promissoria') }}"><span>▣</span><span class="label">Promissória</span></a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="toggle" id="toggleSidebar" type="button">
+            <span>⌞ ⌝</span><span class="label">Abrir</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="header-left">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Senasoft Informática">
+        </div>
+
+        <div class="header-right">
+          <a class="btn" href="{{ url_for('proposta') }}">Gerar proposta</a>
+          <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
+          <a class="btn" href="{{ url_for('promissoria') }}">Promissória</a>
+        </div>
+      </header>
+
+      <section class="container">
+        {% block content %}{% endblock %}
+      </section>
+<footer class="footer">
+  Desenvolvido por Mateus Sena — Senasoft Informática
+</footer>
+    </main>
+  </div>
+</body>
+</html>

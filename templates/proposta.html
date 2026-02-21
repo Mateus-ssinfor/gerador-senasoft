@@ -1,0 +1,50 @@
+﻿{% extends "base.html" %}
+{% block content %}
+  <div class="h1">Nova proposta</div>
+  <p class="p">Preencha os dados e anexe a imagem do equipamento.</p>
+
+  <div class="card">
+    <form method="post" enctype="multipart/form-data" class="form">
+      <div class="full">
+        <label class="label">Cliente</label>
+        <input class="input" name="cliente" required>
+      </div>
+
+      <div>
+        <label class="label">CPF</label>
+        <input class="input" name="cpf" required>
+      </div>
+
+      <div>
+        <label class="label">Modelo</label>
+        <input class="input" name="modelo" required>
+      </div>
+
+      <div>
+        <label class="label">Franquia</label>
+        <input class="input" name="franquia" required>
+      </div>
+
+      <div>
+        <label class="label">Valor</label>
+        <input class="input" name="valor" required>
+      </div>
+
+      <div class="full">
+        <label class="label">Imagem do equipamento (JPG/PNG)</label>
+        <input class="input" type="file" name="imagem" accept="image/*" required>
+      </div>
+
+      <div class="full" style="display:flex; gap:10px; flex-wrap:wrap;">
+  <button class="btn primary" type="submit">Gerar e salvar proposta</button>
+  <a class="btn" href="{{ url_for('home') }}">Voltar</a>
+  <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
+</div>
+    </form>
+
+    {% if erro %}
+      <div class="hr"></div>
+      <div style="color: var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+    {% endif %}
+  </div>
+{% endblock %}
