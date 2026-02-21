@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libreoffice-writer \
     fonts-dejavu \
     fonts-liberation \
-    fonts-crosextra-carlito
-    fonts-crosextra-caladea
+    fonts-crosextra-carlito \
+    fonts-crosextra-caladea \
     fontconfig \
     && rm -rf /var/lib/apt/lists/*
 
