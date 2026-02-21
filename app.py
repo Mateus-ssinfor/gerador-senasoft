@@ -207,7 +207,7 @@ def create_app():
             out_dir = os.path.join(app.config["STORAGE_DIR"], "_contratos_tmp")
             os.makedirs(out_dir, exist_ok=True)
 
-            pdf_path = os.path.join(out_dir, f"CONTRATO - {denominacao} - {datetime.utcnow().strftime('%Y%m%d%H%M%S')}.pdf")
+            pdf_path = os.path.join(out_dir, f"CONTRATO - {denominacao}.pdf")
 
             gerar_contrato_pdf(template_docx_path=template_path, output_pdf_path=pdf_path, dados=dados_contrato)
             return send_file(pdf_path, as_attachment=True)
@@ -269,7 +269,7 @@ def create_app():
             out_dir = os.path.join(app.config["STORAGE_DIR"], "_contratos_tmp")
             os.makedirs(out_dir, exist_ok=True)
 
-            pdf_path = os.path.join(out_dir, f"CONTRATO - {p.client_name} - #{p.id}.pdf")
+            pdf_path = os.path.join(out_dir, f"CONTRATO - {p.client_name}.pdf")
 
             gerar_contrato_pdf(template_docx_path=template_path, output_pdf_path=pdf_path, dados=dados_contrato)
             return send_file(pdf_path, as_attachment=True)
@@ -301,7 +301,7 @@ def create_app():
             img.save(img_path)
 
             template_path = os.path.abspath("./assets/template_promissoria.docx")
-            pdf_path = os.path.join(tmp_dir, f"PROMISSORIA - {nome} - {datetime.utcnow().strftime('%Y%m%d%H%M%S')}.pdf")
+            pdf_path = os.path.join(tmp_dir, f"PROMISSORIA - {nome}.pdf")
 
             dados = {"DATA": venc, "NOME": nome, "CPF": cpf, "ENDERECO": endereco}
 
