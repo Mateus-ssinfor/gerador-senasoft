@@ -11,26 +11,34 @@
   <script defer src="{{ url_for('static', filename='app.js') }}"></script>
 </head>
 <body>
-  <main class="main" style="padding:18px 18px 26px;">
-    <header class="header">
-      <div class="header-left">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Senasoft Informática">
-      </div>
+  <main class="main" style="padding:18px 18px 26px; max-width:1100px; margin:0 auto;">
+    <!-- Topo somente com logo -->
+    <div style="display:flex; justify-content:center; padding:10px 0 6px;">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Senasoft Informática" style="height:34px;">
+    </div>
 
-      <div class="header-right">
-        <a class="btn" href="{{ url_for('gerador') }}">Voltar</a>
-        <a class="btn" href="{{ url_for('proposta') }}">Proposta</a>
-        <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
-        <a class="btn" href="{{ url_for('promissoria') }}">Promissória</a>
+    <!-- Título bem destacado -->
+    <div class="card" style="text-align:center; margin-top:10px;">
+      <div style="font-size:22px; font-weight:900; letter-spacing:.4px;">
+        Gerador de Propostas
       </div>
-    </header>
+      <div style="margin-top:6px; opacity:.70; font-size:13px;">
+        Proposta • Contrato • Promissória
+      </div>
+    </div>
 
-    <section class="container">
+    <!-- Conteúdo -->
+    <section class="container" style="margin-top:14px;">
       {% block content %}{% endblock %}
+
+      <!-- Botão voltar no final -->
+      <div style="display:flex; justify-content:center; margin-top:16px;">
+        <a class="btn" href="/hub" style="padding:12px 18px;">Voltar</a>
+      </div>
     </section>
 
     <footer class="footer">
-      Desenvolvido por Mateus Sena — Senasoft Informática
+      Sistema gerador de Proposta, contrato e promissoria.
     </footer>
   </main>
 </body>
