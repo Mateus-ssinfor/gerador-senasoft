@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Termo de retirada</h1>
+<p class="muted">Preencha e gere o PDF para download (não fica salvo).</p>
+
+<form method="post" class="card" style="max-width:980px;">
+  <div class="grid2">
+    <div>
+      <label>Data retirada (dd/mm/aa)</label>
+      <input name="data_ret" required placeholder="20/02/26">
+    </div>
+    <div>
+      <label>Hora retirada (hh:mm)</label>
+      <input name="hora_ret" required placeholder="13:30">
+    </div>
+    <div>
+      <label>Data devolução (dd/mm/aa)</label>
+      <input name="data_dev" required placeholder="21/02/26">
+    </div>
+    <div>
+      <label>Hora devolução (hh:mm)</label>
+      <input name="hora_dev" required placeholder="15:00">
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div>
+      <label>Nome</label>
+      <input name="nome" required>
+    </div>
+    <div>
+      <label>Telefone</label>
+      <input name="telefone" required>
+    </div>
+  </div>
+
+  <label>Endereço</label>
+  <input name="endereco" required>
+
+  <div class="grid2">
+    <div>
+      <label>Marca</label>
+      <input name="marca" required>
+    </div>
+    <div>
+      <label>Modelo</label>
+      <input name="modelo" required>
+    </div>
+    <div>
+      <label>Nº de série</label>
+      <input name="serie" required>
+    </div>
+    <div>
+      <label>Acessórios</label>
+      <input name="acessorio" required>
+    </div>
+  </div>
+
+  <label>Observação</label>
+  <textarea name="observacao" rows="5" required></textarea>
+
+  <div style="display:flex; gap:10px; margin-top:12px;">
+    <button class="btn" type="submit">Gerar termo (PDF)</button>
+    <a class="btn ghost" href="/">Voltar</a>
+  </div>
+
+  {% if erro %}
+    <p style="color:#ff6b6b; margin-top:12px; white-space:pre-wrap;">{{ erro }}</p>
+  {% endif %}
+</form>
+
+{% endblock %}

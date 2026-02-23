@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Senasoft</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;">
+    <div style="width:min(520px, 95vw); text-align:center;">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

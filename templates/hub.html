@@ -1,0 +1,10 @@
+{% extends "public_base.html" %}
+{% block content %}
+  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Senasoft" style="height:48px; margin-bottom:14px;">
+  <div style="display:grid; gap:12px;">
+    <a class="btn" style="padding:16px; justify-content:center;" href="{{ url_for('termo') }}">Termo de retirada</a>
+    <a class="btn" style="padding:16px; justify-content:center;" href="{{ url_for('sistema') }}">Sistema</a>
+    <a class="btn" style="padding:16px; justify-content:center;" href="{{ url_for('gerador') }}">Gerador</a>
+    <a class="btn danger" style="padding:12px; justify-content:center;" href="{{ url_for('logout') }}">Sair</a>
+  </div>
+{% endblock %}

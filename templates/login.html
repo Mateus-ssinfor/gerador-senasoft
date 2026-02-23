@@ -1,0 +1,33 @@
+{% extends "public_base.html" %}
+{% block content %}
+  <div class="card" style="text-align:left;">
+    <div style="display:flex; justify-content:center; margin-bottom:10px;">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Senasoft" style="height:44px;">
+    </div>
+
+    <div style="text-align:center; margin-bottom:14px; opacity:.75; font-size:13px;">
+      Versão {{ version }}
+    </div>
+
+    <form method="post" style="display:flex; flex-direction:column; gap:10px;">
+      <div>
+        <label class="label">Usuário</label>
+        <input class="input" name="username" required>
+      </div>
+
+      <div>
+        <label class="label">Senha</label>
+        <input class="input" name="password" type="password" required>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn primary" type="submit" style="flex:1;">OK</button>
+        <a class="btn" href="{{ url_for('access') }}" style="flex:1; justify-content:center;">Cancelar</a>
+      </div>
+
+      {% if erro %}
+        <div style="margin-top:10px; color:var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}
