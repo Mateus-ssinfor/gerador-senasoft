@@ -1,90 +1,79 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="h1">Emitir contrato</div>
-  <p class="p">Os dados principais já vêm da proposta. Complete o restante e gere o PDF.</p>
+  <h2>Emitir contrato</h2>
+  <p style="opacity:.75;">Os dados principais já vêm da proposta. Complete o restante e gere o PDF.</p>
 
-  <div class="card">
-    <form method="post" class="form">
-      <div class="full">
-        <h3 style="margin:0 0 10px 0;">Dados puxados da proposta</h3>
-      </div>
+  <form method="post" class="card" style="max-width:980px;">
+    <h3 style="margin-top:0;">Dados puxados da proposta</h3>
 
-      <div class="full">
-        <label class="label">Denominação (Cliente)</label>
-        <input class="input" name="denominacao" required value="{{ pre.denom }}">
-      </div>
-
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
       <div>
-        <label class="label">CPF/CNPJ</label>
-        <input class="input" name="cpf_cnpj" required value="{{ pre.cpf }}">
+        <label>Denominação (Cliente)</label>
+        <input name="denominacao" value="{{ pre.denom }}" required>
       </div>
-
       <div>
-        <label class="label">Equipamento (Modelo)</label>
-        <input class="input" name="equipamento" required value="{{ pre.modelo }}">
+        <label>CPF/CNPJ</label>
+        <input name="cpf_cnpj" value="{{ pre.cpf }}" required>
       </div>
-
       <div>
-        <label class="label">Franquia</label>
-        <input class="input" name="franquia" required value="{{ pre.franquia }}">
+        <label>Equipamento</label>
+        <input name="equipamento" value="{{ pre.modelo }}" required>
       </div>
-
       <div>
-        <label class="label">Valor mensal</label>
-        <input class="input" name="valor_mensal" required value="{{ pre.valor }}">
+        <label>Franquia</label>
+        <input name="franquia" value="{{ pre.franquia }}" required>
       </div>
-
-      <div class="full"><div class="hr"></div></div>
-
-      <div class="full">
-        <h3 style="margin:0 0 10px 0;">Complete</h3>
-      </div>
-
-      <div class="full">
-        <label class="label">Endereço</label>
-        <input class="input" name="endereco" required>
-      </div>
-
       <div>
-        <label class="label">Telefone</label>
-        <input class="input" name="telefone" required>
+        <label>Valor mensal</label>
+        <input name="valor_mensal" value="{{ pre.valor }}" required>
       </div>
+    </div>
 
+    <h3 style="margin-top:18px;">Complete</h3>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
       <div>
-        <label class="label">E-mail</label>
-        <input class="input" name="email" required>
+        <label>Endereço</label>
+        <input name="endereco" required>
       </div>
-
-      <div class="full">
-        <label class="label">Acessórios</label>
-        <div style="display:flex; gap:16px; flex-wrap:wrap; padding:10px 0;">
-          <label class="small"><input type="checkbox" name="acc" value="Cabo energia" checked> Cabo energia</label>
-          <label class="small"><input type="checkbox" name="acc" value="Cabo USB" checked> Cabo USB</label>
+      <div>
+        <label>Telefone</label>
+        <input name="telefone" required>
+      </div>
+      <div>
+        <label>E-mail</label>
+        <input name="email" required>
+      </div>
+      <div>
+        <label>Acessórios</label>
+        <div style="display:flex; gap:14px; flex-wrap:wrap; padding:8px 0;">
+          <label style="display:flex; gap:8px; align-items:center;">
+            <input type="checkbox" name="acc" value="Cabo energia"> Cabo energia
+          </label>
+          <label style="display:flex; gap:8px; align-items:center;">
+            <input type="checkbox" name="acc" value="Cabo USB"> Cabo USB
+          </label>
         </div>
-
-        <label class="label">Outros acessórios (opcional)</label>
-        <input class="input" name="acc_outros">
+        <input name="acc_outros" placeholder="Outros acessórios (opcional)">
       </div>
 
       <div>
-        <label class="label">Data início (digite só números: 200226 → 20/02/26)</label>
-        <input id="data_inicio" class="input" name="data_inicio" required placeholder="dd/mm/aa" maxlength="8" inputmode="numeric">
+        <label>Data início (digite só números: 200226 → 20/02/26)</label>
+        <input name="data_inicio" placeholder="ddmmaa" required>
       </div>
-
       <div>
-        <label class="label">Data término (digite só números)</label>
-        <input id="data_termino" class="input" name="data_termino" required placeholder="dd/mm/aa" maxlength="8" inputmode="numeric">
+        <label>Data término (digite só números: 200226 → 20/02/26)</label>
+        <input name="data_termino" placeholder="ddmmaa" required>
       </div>
+    </div>
 
-      <div class="full" style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="btn primary" type="submit">Gerar contrato (PDF)</button>
-        <a class="btn" href="/gerador" style="padding:12pc 18px;">Voltar</a>
-      </div>
-    </form>
+    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+      <button class="btn" type="submit">Gerar contrato (PDF)</button>
+      <a class="btn" href="/gerador">Voltar</a>
+    </div>
 
     {% if erro %}
-      <div class="hr"></div>
-      <div style="color: var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      <p style="color:#ff7070; margin-top:12px; white-space:pre-wrap;">{{ erro }}</p>
     {% endif %}
-  </div>
+  </form>
 {% endblock %}

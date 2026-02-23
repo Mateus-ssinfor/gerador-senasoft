@@ -1,44 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="h1">Promissória</div>
-  <p class="p">Preencha os dados e anexe a foto do documento. O PDF será gerado e baixado na hora (não salva).</p>
+  <h2>Nota promissória</h2>
+  <p style="opacity:.75;">Preencha tudo e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
 
-  <div class="card">
-    <form method="post" enctype="multipart/form-data" class="form">
-      <div class="full">
-        <label class="label">Nome</label>
-        <input class="input" name="nome" required>
+  <form method="post" enctype="multipart/form-data" class="card" style="max-width:980px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div>
+        <label>Emitente</label>
+        <input name="emitente" required>
+      </div>
+      <div>
+        <label>CPF/CNPJ</label>
+        <input name="cpf_cnpj" required>
+      </div>
+      <div>
+        <label>Endereço</label>
+        <input name="endereco" required>
+      </div>
+      <div>
+        <label>Valor</label>
+        <input name="valor" required>
       </div>
 
       <div>
-        <label class="label">CPF</label>
-        <input class="input" name="cpf" required>
-      </div>
-
-      <div class="full">
-        <label class="label">Endereço</label>
-        <input class="input" name="endereco" required>
+        <label>Vencimento (digite só números: 200226 → 20/02/26)</label>
+        <input name="vencimento" placeholder="ddmmaa" required>
       </div>
 
       <div>
-        <label class="label">Vencimento (digite só números: 200226 → 20/02/26)</label>
-        <input id="data_venc" class="input" name="data_venc" required placeholder="dd/mm/aa" maxlength="8" inputmode="numeric">
+        <label>Foto do documento (RG/CNH)</label>
+        <input type="file" name="imagem" accept="image/*" required>
       </div>
+    </div>
 
-      <div class="full">
-        <label class="label">Foto do documento (RG/CNH)</label>
-        <input class="input" type="file" name="imagem_rg" accept="image/*" required>
-      </div>
-
-      <div class="full" style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="btn primary" type="submit">Gerar promissória (PDF)</button>
-        <a class="btn" href="{{ url_for('gerador') }}">Voltar</a>
-      </div>
-    </form>
+    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+      <button class="btn" type="submit">Gerar promissória (PDF)</button>
+      <a class="btn" href="/gerador">Voltar</a>
+    </div>
 
     {% if erro %}
-      <div class="hr"></div>
-      <div style="color: var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      <p style="color:#ff7070; margin-top:12px; white-space:pre-wrap;">{{ erro }}</p>
     {% endif %}
-  </div>
+  </form>
 {% endblock %}
