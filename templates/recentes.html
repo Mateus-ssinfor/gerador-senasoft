@@ -36,52 +36,42 @@
   </div>
 </div>
 
-<!-- MODAL FLUTUANTE (CSS embutido pra não depender do app.css) -->
 <style>
   #modalOverlay{
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 18px;
-    background: rgba(0,0,0,.65);
-    backdrop-filter: blur(6px);
-    z-index: 9999;
+    position: fixed; inset:0; display:none; align-items:center; justify-content:center;
+    padding:18px; background: rgba(0,0,0,.65); backdrop-filter: blur(6px); z-index:9999;
   }
   #modalCard{
-    width: min(720px, 95vw);
-    max-height: 85vh;
-    overflow: auto;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.10);
+    width:min(560px, 95vw);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.10);
     background: rgba(20,20,20,.92);
     box-shadow: 0 20px 60px rgba(0,0,0,.55);
-    padding: 16px;
+    padding:16px;
   }
-  #modalTitle{
-    font-weight: 900;
-    margin: 0 0 10px;
-    font-size: 16px;
-  }
-  #modalPre{
-    white-space: pre-wrap;
-    word-break: break-word;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: 13px;
-    opacity: .9;
-    margin: 0;
-    padding: 12px;
-    border-radius: 12px;
+  .kv{
+    display:flex; justify-content:space-between; gap:12px;
+    padding:10px 12px; border-radius:12px;
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.08);
+    margin-top:10px;
   }
+  .k{ opacity:.75; font-size:13px; }
+  .v{ font-weight:700; text-align:right; }
 </style>
 
 <div id="modalOverlay" onclick="fecharModal(event)">
   <div id="modalCard" onclick="event.stopPropagation()">
-    <div id="modalTitle">Dados da proposta</div>
-    <pre id="modalPre"></pre>
+    <div style="font-weight:900; margin:0 0 6px; font-size:16px;">Dados da proposta</div>
+
+    <div class="kv"><div class="k">Cliente</div><div class="v" id="mCliente"></div></div>
+    <div class="kv"><div class="k">CPF</div><div class="v" id="mCpf"></div></div>
+    <div class="kv"><div class="k">Modelo</div><div class="v" id="mModelo"></div></div>
+    <div class="kv"><div class="k">Franquia</div><div class="v" id="mFranquia"></div></div>
+    <div class="kv"><div class="k">Valor</div><div class="v" id="mValor"></div></div>
+    <div class="kv"><div class="k">Criada</div><div class="v" id="mCriada"></div></div>
+    <div class="kv"><div class="k">Expira</div><div class="v" id="mExpira"></div></div>
+
     <div style="display:flex; justify-content:flex-end; margin-top:12px;">
       <button class="btn" type="button" onclick="fecharModal()">Fechar</button>
     </div>
@@ -93,16 +83,23 @@
     try{
       const r = await fetch(`/api/proposta/${id}`);
       if(!r.ok) throw new Error("Erro ao carregar proposta.");
-      const data = await r.json();
-      document.getElementById("modalPre").textContent = JSON.stringify(data, null, 2);
+      const d = await r.json();
+
+      document.getElementById("mCliente").textContent = d.client_name || "";
+      document.getElementById("mCpf").textContent     = d.cpf || "";
+      document.getElementById("mModelo").textContent  = d.modelo || "";
+      document.getElementById("mFranquia").textContent= d.franquia || "";
+      document.getElementById("mValor").textContent   = d.valor || "";
+      document.getElementById("mCriada").textContent  = d.criada || "";
+      document.getElementById("mExpira").textContent  = d.expira || "";
+
       document.getElementById("modalOverlay").style.display = "flex";
     }catch(e){
       alert(e.message || "Erro ao carregar proposta.");
     }
   }
 
-  function fecharModal(ev){
-    // se clicar no fundo ou no botão, fecha
+  function fecharModal(){
     document.getElementById("modalOverlay").style.display = "none";
   }
 </script>
