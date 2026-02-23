@@ -24,10 +24,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Sessão (IMPORTANTE no Railway: defina SECRET_KEY nas Variables)
+    # Sessão (Railway: defina SECRET_KEY nas Variables)
     app.secret_key = os.getenv("SECRET_KEY", "DEV_ONLY_CHANGE_ME")
 
-    # Versão profissional (Railway Variables)
+    # Login fixo (Railway Variables)
     app.config["APP_VERSION"] = os.getenv("APP_VERSION", "1.0.0")
     app.config["ADMIN_USER"] = os.getenv("ADMIN_USER", "admin")
     app.config["ADMIN_PASS"] = os.getenv("ADMIN_PASS", "admin")
@@ -38,22 +38,19 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    # ---------- Guard / Cleanup ----------
     PUBLIC_PATHS = {"/", "/login", "/hub", "/logout", "/health"}
 
     @app.before_request
     def _guard_and_cleanup():
         path = request.path
 
-        # libera static e rotas públicas
         if path.startswith("/static/") or path in PUBLIC_PATHS:
             return None
 
-        # exige login para o resto
         if not session.get("logged_in"):
             return redirect(url_for("access"))
 
-        # limpeza (somente logado)
+        # limpeza
         try:
             cleanup_expired(app.config["RETENTION_DAYS"])
         except Exception:
@@ -97,10 +94,10 @@ def create_app():
             return redirect(url_for("access"))
         return render_template("hub.html")
 
-    # ---------- HUB: Sistema placeholder ----------
+    # ---------- SISTEMA (placeholder correto) ----------
     @app.get("/sistema")
     def sistema():
-        return render_template("gerador_home.html")
+        return "<h2>Sistema (Venda/OS) em construção</h2><p><a href='/hub'>Voltar</a></p>"
 
     # ---------- GERADOR ----------
     @app.get("/gerador")
@@ -378,7 +375,7 @@ def create_app():
             return render_template("termo.html", erro=None)
 
         try:
-            eq = set(request.form.getlist("eq"))  # pode marcar mais de 1
+            eq = set(request.form.getlist("eq"))
             ck = "☑"
             un = "☐"
 

@@ -2,53 +2,50 @@
 {% block content %}
 
 <div class="panel">
-  <div class="panel-head">
-    <h1 class="panel-title">Nota promissória</h1>
-    <p class="panel-subtitle">Preencha tudo e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
+  <div class="panel-head" style="text-align:center;">
+    <h1 class="panel-title">Gerador de Propostas</h1>
+    <p class="panel-subtitle">Proposta • Contrato • Promissória</p>
   </div>
 
-  <form method="post" enctype="multipart/form-data" class="panel-body">
+  <div class="panel-body">
     <div class="grid grid-2">
-      <div class="field">
-        <label>Emitente</label>
-        <input name="emitente" required>
+      <div class="item">
+        <div class="item-title">Gerar Proposta</div>
+        <div class="item-sub">Crie uma proposta em PDF com imagem e dados do cliente.</div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('proposta') }}">Nova proposta</a>
+        </div>
       </div>
 
-      <div class="field">
-        <label>CPF/CNPJ</label>
-        <input name="cpf_cnpj" required>
+      <div class="item">
+        <div class="item-title">Propostas recentes</div>
+        <div class="item-sub">Visualize, baixe, exclua e emita contrato a partir da proposta.</div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('recentes') }}">Abrir recentes</a>
+        </div>
       </div>
 
-      <div class="field">
-        <label>Endereço</label>
-        <input name="endereco" required>
+      <div class="item">
+        <div class="item-title">Emitir Contrato</div>
+        <div class="item-sub">Faça um contrato manual ou a partir de uma proposta.</div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('contrato_manual') }}">Emitir contrato</a>
+        </div>
       </div>
 
-      <div class="field">
-        <label>Valor</label>
-        <input name="valor" required>
-      </div>
-
-      <div class="field">
-        <label>Vencimento (só números: 200226 → 20/02/26)</label>
-        <input name="vencimento" placeholder="ddmmaa" required>
-      </div>
-
-      <div class="field">
-        <label>Foto do documento (RG/CNH)</label>
-        <input type="file" name="imagem" accept="image/*" required>
+      <div class="item">
+        <div class="item-title">Promissória</div>
+        <div class="item-sub">Preencha tudo e anexe a foto do documento. Gera PDF e baixa na hora.</div>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('promissoria') }}">Gerar promissória</a>
+        </div>
       </div>
     </div>
 
-    <div class="actions">
-      <button class="btn" type="submit">Gerar promissória (PDF)</button>
-      <a class="btn" href="/gerador">Voltar</a>
+    <div class="actions" style="justify-content:center; margin-top:16px;">
+      <a class="btn" href="/hub">Voltar ao Hub</a>
     </div>
-
-    {% if erro %}
-      <p class="error">{{ erro }}</p>
-    {% endif %}
-  </form>
+  </div>
 </div>
 
 {% endblock %}

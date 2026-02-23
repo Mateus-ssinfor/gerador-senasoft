@@ -4,39 +4,34 @@
 <div class="panel">
   <div class="panel-head">
     <h1 class="panel-title">Nota promissória</h1>
-    <p class="panel-subtitle">Preencha tudo e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
+    <p class="panel-subtitle">Preencha os dados e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
   </div>
 
   <form method="post" enctype="multipart/form-data" class="panel-body">
     <div class="grid grid-2">
       <div class="field">
-        <label>Emitente</label>
-        <input name="emitente" required>
+        <label>Nome</label>
+        <input class="input" name="nome" required>
       </div>
 
       <div class="field">
-        <label>CPF/CNPJ</label>
-        <input name="cpf_cnpj" required>
+        <label>CPF</label>
+        <input class="input" name="cpf" required>
       </div>
 
       <div class="field">
         <label>Endereço</label>
-        <input name="endereco" required>
+        <input class="input" name="endereco" required>
       </div>
 
       <div class="field">
-        <label>Valor</label>
-        <input name="valor" required>
+        <label>Vencimento (digite só números: 200226 → 20/02/26)</label>
+        <input class="input mask-date" name="data_venc" maxlength="8" placeholder="dd/mm/aa" required>
       </div>
 
-      <div class="field">
-        <label>Vencimento (só números: 200226 → 20/02/26)</label>
-        <input name="vencimento" placeholder="ddmmaa" required>
-      </div>
-
-      <div class="field">
+      <div class="field" style="grid-column: 1 / -1;">
         <label>Foto do documento (RG/CNH)</label>
-        <input type="file" name="imagem" accept="image/*" required>
+        <input class="input" type="file" name="imagem_rg" accept="image/*" required>
       </div>
     </div>
 
