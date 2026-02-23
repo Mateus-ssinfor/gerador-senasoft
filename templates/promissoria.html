@@ -1,49 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
+  <div class="card" style="text-align:left;">
+    <h2 style="margin:0 0 6px;">Nota promissória</h2>
+    <p style="margin:0 0 14px; opacity:.75;">Preencha os dados e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
 
-<div class="panel">
-  <div class="panel-head">
-    <h1 class="panel-title">Nota promissória</h1>
-    <p class="panel-subtitle">Preencha os dados e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
+    <form method="post" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div>
+          <label class="label">Nome</label>
+          <input class="input" name="nome" required>
+        </div>
+
+        <div>
+          <label class="label">CPF</label>
+          <input class="input" name="cpf" required>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+          <label class="label">Endereço</label>
+          <input class="input" name="endereco" required>
+        </div>
+
+        <div>
+          <label class="label">Vencimento (só números: 200226 → 20/02/26)</label>
+          <input class="input mask-date" name="data_venc" placeholder="dd/mm/aa" maxlength="8" required>
+        </div>
+
+        <div>
+          <label class="label">Foto do documento (RG/CNH)</label>
+          <input class="input" type="file" name="imagem_rg" accept="image/*" required>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn primary" type="submit" style="flex:1;">Gerar promissória (PDF)</button>
+        <a class="btn" href="/gerador" style="justify-content:center; flex:1;">Voltar</a>
+      </div>
+
+      {% if erro %}
+        <div style="margin-top:10px; color:var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      {% endif %}
+    </form>
   </div>
-
-  <form method="post" enctype="multipart/form-data" class="panel-body">
-    <div class="grid grid-2">
-      <div class="field">
-        <label>Nome</label>
-        <input class="input" name="nome" required>
-      </div>
-
-      <div class="field">
-        <label>CPF</label>
-        <input class="input" name="cpf" required>
-      </div>
-
-      <div class="field">
-        <label>Endereço</label>
-        <input class="input" name="endereco" required>
-      </div>
-
-      <div class="field">
-        <label>Vencimento (digite só números: 200226 → 20/02/26)</label>
-        <input class="input mask-date" name="data_venc" maxlength="8" placeholder="dd/mm/aa" required>
-      </div>
-
-      <div class="field" style="grid-column: 1 / -1;">
-        <label>Foto do documento (RG/CNH)</label>
-        <input class="input" type="file" name="imagem_rg" accept="image/*" required>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn" type="submit">Gerar promissória (PDF)</button>
-      <a class="btn" href="/gerador">Voltar</a>
-    </div>
-
-    {% if erro %}
-      <p class="error">{{ erro }}</p>
-    {% endif %}
-  </form>
-</div>
-
 {% endblock %}

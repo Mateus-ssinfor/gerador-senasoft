@@ -1,55 +1,50 @@
 ﻿{% extends "base.html" %}
 {% block content %}
+  <div class="card" style="text-align:left;">
+    <h2 style="margin:0 0 6px;">Nova proposta</h2>
+    <p style="margin:0 0 14px; opacity:.75;">Preencha os dados e anexe a imagem do equipamento.</p>
 
-<div class="panel">
-  <div class="panel-head">
-    <h1 class="panel-title">Nova proposta</h1>
-    <p class="panel-subtitle">Preencha os dados e anexe a imagem do equipamento.</p>
+    <form method="post" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div>
+          <label class="label">Cliente</label>
+          <input class="input" name="cliente" required>
+        </div>
+
+        <div>
+          <label class="label">CPF</label>
+          <input class="input" name="cpf" required>
+        </div>
+
+        <div>
+          <label class="label">Modelo</label>
+          <input class="input" name="modelo" required>
+        </div>
+
+        <div>
+          <label class="label">Franquia</label>
+          <input class="input" name="franquia" required>
+        </div>
+
+        <div>
+          <label class="label">Valor</label>
+          <input class="input" name="valor" required>
+        </div>
+
+        <div>
+          <label class="label">Imagem do equipamento (JPG/PNG)</label>
+          <input class="input" type="file" name="imagem" accept="image/*" required>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn primary" type="submit" style="flex:1;">Gerar e salvar proposta</button>
+        <a class="btn" href="/gerador" style="justify-content:center; flex:1;">Voltar</a>
+      </div>
+
+      {% if erro %}
+        <div style="margin-top:10px; color:var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      {% endif %}
+    </form>
   </div>
-
-  <form method="post" enctype="multipart/form-data" class="panel-body">
-    <div class="grid grid-2">
-      <div class="field">
-        <label>Cliente</label>
-        <input name="cliente" required>
-      </div>
-
-      <div class="field">
-        <label>CPF</label>
-        <input name="cpf" required>
-      </div>
-
-      <div class="field">
-        <label>Modelo</label>
-        <input name="modelo" required>
-      </div>
-
-      <div class="field">
-        <label>Franquia</label>
-        <input name="franquia" required>
-      </div>
-
-      <div class="field">
-        <label>Valor</label>
-        <input name="valor" required>
-      </div>
-
-      <div class="field">
-        <label>Imagem do equipamento (JPG/PNG)</label>
-        <input type="file" name="imagem" accept="image/*" required>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn" type="submit">Gerar e salvar proposta</button>
-      <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
-      <a class="btn" href="/gerador">Voltar</a>
-    </div>
-
-    {% if erro %}
-      <p class="error">{{ erro }}</p>
-    {% endif %}
-  </form>
-</div>
-
 {% endblock %}

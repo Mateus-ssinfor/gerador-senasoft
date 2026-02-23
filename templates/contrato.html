@@ -1,89 +1,86 @@
 {% extends "base.html" %}
 {% block content %}
+  <div class="card" style="text-align:left;">
+    <h2 style="margin:0 0 6px;">Emitir contrato</h2>
+    <p style="margin:0 0 14px; opacity:.75;">Complete os dados e gere o PDF.</p>
 
-<div class="panel">
-  <div class="panel-head">
-    <h1 class="panel-title">Emitir contrato</h1>
-    <p class="panel-subtitle">Os dados principais já vêm da proposta. Complete o restante e gere o PDF.</p>
-  </div>
-
-  <form method="post" class="panel-body">
-    <h3 class="section-title">Dados puxados da proposta</h3>
-
-    <div class="grid grid-2">
-      <div class="field">
-        <label>Denominação (Cliente)</label>
-        <input name="denominacao" value="{{ pre.denom }}" required>
-      </div>
-
-      <div class="field">
-        <label>CPF/CNPJ</label>
-        <input name="cpf_cnpj" value="{{ pre.cpf }}" required>
-      </div>
-
-      <div class="field">
-        <label>Equipamento</label>
-        <input name="equipamento" value="{{ pre.modelo }}" required>
-      </div>
-
-      <div class="field">
-        <label>Franquia</label>
-        <input name="franquia" value="{{ pre.franquia }}" required>
-      </div>
-
-      <div class="field">
-        <label>Valor mensal</label>
-        <input name="valor_mensal" value="{{ pre.valor }}" required>
-      </div>
-    </div>
-
-    <h3 class="section-title">Complete</h3>
-
-    <div class="grid grid-2">
-      <div class="field">
-        <label>Endereço</label>
-        <input name="endereco" required>
-      </div>
-
-      <div class="field">
-        <label>Telefone</label>
-        <input name="telefone" required>
-      </div>
-
-      <div class="field">
-        <label>E-mail</label>
-        <input name="email" required>
-      </div>
-
-      <div class="field">
-        <label>Acessórios</label>
-        <div class="checks">
-          <label><input type="checkbox" name="acc" value="Cabo energia"> Cabo energia</label>
-          <label><input type="checkbox" name="acc" value="Cabo USB"> Cabo USB</label>
+    <form method="post" style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div>
+          <label class="label">Denominação (Cliente)</label>
+          <input class="input" name="denominacao" value="{{ pre.denom }}" required>
         </div>
-        <input name="acc_outros" placeholder="Outros acessórios (opcional)">
+
+        <div>
+          <label class="label">CPF/CNPJ</label>
+          <input class="input" name="cpf_cnpj" value="{{ pre.cpf }}" required>
+        </div>
+
+        <div>
+          <label class="label">Endereço</label>
+          <input class="input" name="endereco" required>
+        </div>
+
+        <div>
+          <label class="label">Telefone</label>
+          <input class="input" name="telefone" required>
+        </div>
+
+        <div>
+          <label class="label">E-mail</label>
+          <input class="input" name="email" required>
+        </div>
+
+        <div>
+          <label class="label">Equipamento</label>
+          <input class="input" name="equipamento" value="{{ pre.modelo }}" required>
+        </div>
+
+        <div>
+          <label class="label">Franquia</label>
+          <input class="input" name="franquia" value="{{ pre.franquia }}" required>
+        </div>
+
+        <div>
+          <label class="label">Valor mensal</label>
+          <input class="input" name="valor_mensal" value="{{ pre.valor }}" required>
+        </div>
+
+        <div>
+          <label class="label">Data início (só números: 200226 → 20/02/26)</label>
+          <input class="input mask-date" name="data_inicio" placeholder="dd/mm/aa" maxlength="8" required>
+        </div>
+
+        <div>
+          <label class="label">Data término (só números: 200226 → 20/02/26)</label>
+          <input class="input mask-date" name="data_termino" placeholder="dd/mm/aa" maxlength="8" required>
+        </div>
       </div>
 
-      <div class="field">
-        <label>Data início (só números: 200226 → 20/02/26)</label>
-        <input name="data_inicio" placeholder="ddmmaa" required>
+      <div class="card" style="padding:12px; margin-top:6px;">
+        <div style="font-weight:700; margin-bottom:8px;">Acessórios</div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <label style="display:flex; gap:8px; align-items:center;">
+            <input type="checkbox" name="acc" value="Cabo energia"> Cabo energia
+          </label>
+          <label style="display:flex; gap:8px; align-items:center;">
+            <input type="checkbox" name="acc" value="Cabo USB"> Cabo USB
+          </label>
+        </div>
+        <div style="margin-top:10px;">
+          <label class="label">Outros (opcional)</label>
+          <input class="input" name="acc_outros" placeholder="Ex: Fonte / Suporte...">
+        </div>
       </div>
 
-      <div class="field">
-        <label>Data término (só números: 200226 → 20/02/26)</label>
-        <input name="data_termino" placeholder="ddmmaa" required>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button class="btn primary" type="submit" style="flex:1;">Gerar contrato (PDF)</button>
+        <a class="btn" href="/gerador" style="justify-content:center; flex:1;">Voltar</a>
       </div>
-    </div>
 
-    <div class="actions">
-      <button class="btn" type="submit">Gerar contrato (PDF)</button>
-      <a class="btn" href="/gerador">Voltar</a>
-    </div>
-
-    {% if erro %}
-      <p class="error">{{ erro }}</p>
-    {% endif %}
-  </form>
-</div>
-
+      {% if erro %}
+        <div style="margin-top:10px; color:var(--danger); white-space:pre-wrap;">{{ erro }}</div>
+      {% endif %}
+    </form>
+  </div>
 {% endblock %}
