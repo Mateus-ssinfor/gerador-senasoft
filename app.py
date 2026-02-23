@@ -24,7 +24,10 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # versão profissional (Railway Variables ou .env)
+    # Sessão (IMPORTANTE no Railway: defina SECRET_KEY nas Variables)
+    app.secret_key = os.getenv("SECRET_KEY", "DEV_ONLY_CHANGE_ME")
+
+    # Versão profissional (Railway Variables)
     app.config["APP_VERSION"] = os.getenv("APP_VERSION", "1.0.0")
     app.config["ADMIN_USER"] = os.getenv("ADMIN_USER", "admin")
     app.config["ADMIN_PASS"] = os.getenv("ADMIN_PASS", "admin")
@@ -35,8 +38,9 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    # --------- Proteção (login) ----------
-    PUBLIC_PATHS = {"/", "/login", "/hub", "/health"}
+    # ---------- Guard / Cleanup ----------
+    PUBLIC_PATHS = {"/", "/login", "/hub", "/logout", "/health"}
+
     @app.before_request
     def _guard_and_cleanup():
         path = request.path
@@ -49,30 +53,21 @@ def create_app():
         if not session.get("logged_in"):
             return redirect(url_for("access"))
 
-        # limpeza (somente quando logado, pra não gastar)
+        # limpeza (somente logado)
         try:
             cleanup_expired(app.config["RETENTION_DAYS"])
         except Exception:
             pass
 
-        try:
-            cleanup_tmp_contracts(os.path.join(app.config["STORAGE_DIR"], "_contratos_tmp"), max_age_hours=24)
-        except Exception:
-            pass
-
-        try:
-            cleanup_tmp_contracts(os.path.join(app.config["STORAGE_DIR"], "_promissorias_tmp"), max_age_hours=24)
-        except Exception:
-            pass
-
-        try:
-            cleanup_tmp_contracts(os.path.join(app.config["STORAGE_DIR"], "_termos_tmp"), max_age_hours=24)
-        except Exception:
-            pass
+        for folder in ["_contratos_tmp", "_promissorias_tmp", "_termos_tmp", "_tmp"]:
+            try:
+                cleanup_tmp_contracts(os.path.join(app.config["STORAGE_DIR"], folder), max_age_hours=24)
+            except Exception:
+                pass
 
         return None
 
-    # --------- Telas públicas ----------
+    # ---------- Telas públicas ----------
     @app.get("/")
     def access():
         return render_template("access.html")
@@ -102,13 +97,12 @@ def create_app():
             return redirect(url_for("access"))
         return render_template("hub.html")
 
-    # --------- HUB: Sistema (placeholder) ----------
+    # ---------- HUB: Sistema placeholder ----------
     @app.get("/sistema")
     def sistema():
-        # depois a gente cria as telas Venda/OS aqui
         return "<h2>Sistema (Venda/OS) em construção</h2><p><a href='/hub'>Voltar</a></p>"
 
-    # --------- GERADOR (o que já existe hoje) ----------
+    # ---------- GERADOR ----------
     @app.get("/gerador")
     def gerador():
         return render_template("gerador_home.html")
@@ -360,7 +354,12 @@ def create_app():
 
             dados = {"DATA": venc, "NOME": nome, "CPF": cpf, "ENDERECO": endereco}
 
-            gerar_promissoria_pdf(template_docx_path=template_path, output_pdf_path=pdf_path, dados=dados, imagem_rg_path=img_path)
+            gerar_promissoria_pdf(
+                template_docx_path=template_path,
+                output_pdf_path=pdf_path,
+                dados=dados,
+                imagem_rg_path=img_path
+            )
 
             try:
                 os.remove(img_path)
@@ -380,32 +379,30 @@ def create_app():
 
         try:
             eq = set(request.form.getlist("eq"))  # pode marcar mais de 1
+            ck = "☑"
+            un = "☐"
 
-ck = "☑"
-un = "☐"
+            dados = {
+                "DATA_RET": request.form.get("data_ret", "").strip(),
+                "HORA_RET": request.form.get("hora_ret", "").strip(),
+                "DATA_DEV": request.form.get("data_dev", "").strip(),
+                "HORA_DEV": request.form.get("hora_dev", "").strip(),
 
-dados = {
-    "DATA_RET": request.form.get("data_ret", "").strip(),
-    "HORA_RET": request.form.get("hora_ret", "").strip(),
-    "DATA_DEV": request.form.get("data_dev", "").strip(),
-    "HORA_DEV": request.form.get("hora_dev", "").strip(),
+                "NOME": request.form.get("nome", "").strip(),
+                "TELEFONE": request.form.get("telefone", "").strip(),
+                "ENDEREÇO": request.form.get("endereco", "").strip(),
 
-    "NOME": request.form.get("nome", "").strip(),
-    "TELEFONE": request.form.get("telefone", "").strip(),
-    "ENDEREÇO": request.form.get("endereco", "").strip(),
+                "CK_CPU": ck if "CPU" in eq else un,
+                "CK_NOT": ck if "NOT" in eq else un,
+                "CK_MON": ck if "MON" in eq else un,
+                "CK_IMP": ck if "IMP" in eq else un,
 
-    # CHECKS do template
-    "CK_CPU": ck if "CPU" in eq else un,
-    "CK_NOT": ck if "NOT" in eq else un,
-    "CK_MON": ck if "MON" in eq else un,
-    "CK_IMP": ck if "IMP" in eq else un,
-
-    "MARCA": request.form.get("marca", "").strip(),
-    "MODELO": request.form.get("modelo", "").strip(),
-    "SERIE": request.form.get("serie", "").strip(),
-    "ACESSORIO": request.form.get("acessorio", "").strip(),
-    "OBSERVAÇÃO": request.form.get("observacao", "").strip(),
-}
+                "MARCA": request.form.get("marca", "").strip(),
+                "MODELO": request.form.get("modelo", "").strip(),
+                "SERIE": request.form.get("serie", "").strip(),
+                "ACESSORIO": request.form.get("acessorio", "").strip(),
+                "OBSERVAÇÃO": request.form.get("observacao", "").strip(),
+            }
 
             template_path = os.path.abspath("./assets/template_termo_retirada.docx")
             tmp_dir = os.path.join(app.config["STORAGE_DIR"], "_termos_tmp")
