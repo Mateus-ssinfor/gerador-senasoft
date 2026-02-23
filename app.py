@@ -100,7 +100,7 @@ def create_app():
     # ---------- HUB: Sistema placeholder ----------
     @app.get("/sistema")
     def sistema():
-        return "<h2>Sistema (Venda/OS) em construção</h2><p><a href='/hub'>Voltar</a></p>"
+        return render_template("gerador_home.html")
 
     # ---------- GERADOR ----------
     @app.get("/gerador")
