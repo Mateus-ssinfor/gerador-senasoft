@@ -1,45 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Nota promissória</h2>
-  <p style="opacity:.75;">Preencha tudo e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
 
-  <form method="post" enctype="multipart/form-data" class="card" style="max-width:980px;">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div>
+<div class="panel">
+  <div class="panel-head">
+    <h1 class="panel-title">Nota promissória</h1>
+    <p class="panel-subtitle">Preencha tudo e anexe a foto do documento (RG/CNH). Gera PDF e baixa na hora.</p>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="panel-body">
+    <div class="grid grid-2">
+      <div class="field">
         <label>Emitente</label>
         <input name="emitente" required>
       </div>
-      <div>
+
+      <div class="field">
         <label>CPF/CNPJ</label>
         <input name="cpf_cnpj" required>
       </div>
-      <div>
+
+      <div class="field">
         <label>Endereço</label>
         <input name="endereco" required>
       </div>
-      <div>
+
+      <div class="field">
         <label>Valor</label>
         <input name="valor" required>
       </div>
 
-      <div>
-        <label>Vencimento (digite só números: 200226 → 20/02/26)</label>
+      <div class="field">
+        <label>Vencimento (só números: 200226 → 20/02/26)</label>
         <input name="vencimento" placeholder="ddmmaa" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>Foto do documento (RG/CNH)</label>
         <input type="file" name="imagem" accept="image/*" required>
       </div>
     </div>
 
-    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+    <div class="actions">
       <button class="btn" type="submit">Gerar promissória (PDF)</button>
       <a class="btn" href="/gerador">Voltar</a>
     </div>
 
     {% if erro %}
-      <p style="color:#ff7070; margin-top:12px; white-space:pre-wrap;">{{ erro }}</p>
+      <p class="error">{{ erro }}</p>
     {% endif %}
   </form>
+</div>
+
 {% endblock %}

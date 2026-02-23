@@ -1,49 +1,55 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-  <h2>Nova proposta</h2>
-  <p style="opacity:.75;">Preencha os dados e anexe a imagem do equipamento.</p>
 
-  <form method="post" enctype="multipart/form-data" class="card" style="max-width:820px;">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div>
+<div class="panel">
+  <div class="panel-head">
+    <h1 class="panel-title">Nova proposta</h1>
+    <p class="panel-subtitle">Preencha os dados e anexe a imagem do equipamento.</p>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="panel-body">
+    <div class="grid grid-2">
+      <div class="field">
         <label>Cliente</label>
         <input name="cliente" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>CPF</label>
         <input name="cpf" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>Modelo</label>
         <input name="modelo" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>Franquia</label>
         <input name="franquia" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>Valor</label>
         <input name="valor" required>
       </div>
 
-      <div>
+      <div class="field">
         <label>Imagem do equipamento (JPG/PNG)</label>
         <input type="file" name="imagem" accept="image/*" required>
       </div>
     </div>
 
-    <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+    <div class="actions">
       <button class="btn" type="submit">Gerar e salvar proposta</button>
-      <a class="btn" href="/gerador">Voltar</a>
       <a class="btn" href="{{ url_for('recentes') }}">Recentes</a>
+      <a class="btn" href="/gerador">Voltar</a>
     </div>
 
     {% if erro %}
-      <p style="color:#ff7070; margin-top:12px; white-space:pre-wrap;">{{ erro }}</p>
+      <p class="error">{{ erro }}</p>
     {% endif %}
   </form>
+</div>
+
 {% endblock %}

@@ -1,63 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Propostas recentes</h2>
-  <p style="opacity:.75;">Últimos 10 dias. Você pode visualizar, baixar, emitir contrato e excluir.</p>
 
-  <div class="card" style="margin-top:12px;">
+<div class="panel">
+  <div class="panel-head">
+    <h1 class="panel-title">Propostas recentes</h1>
+    <p class="panel-subtitle">Últimos 10 dias. Você pode visualizar, baixar, emitir contrato e excluir.</p>
+  </div>
+
+  <div class="panel-body">
     {% if not items %}
-      <div style="opacity:.8;">Nenhuma proposta ainda.</div>
+      <div class="empty">Nenhuma proposta ainda.</div>
     {% else %}
-      {% for p in items %}
-        <div class="card" style="margin:0 0 12px 0;">
-          <div style="font-weight:800;">#{{ p.id }} — {{ p.client_name }}</div>
-          <div style="opacity:.8; font-size:13px;">
-            Criada: {{ p.created_at.strftime('%d/%m/%Y %H:%M') }} |
-            Expira: {{ p.expires_at.strftime('%d/%m/%Y %H:%M') }}
-          </div>
+      <div class="list">
+        {% for p in items %}
+          <div class="item">
+            <div class="item-title">#{{ p.id }} — {{ p.client_name }}</div>
+            <div class="item-sub">
+              Criada: {{ p.created_at.strftime('%d/%m/%Y %H:%M') }} |
+              Expira: {{ p.expires_at.strftime('%d/%m/%Y %H:%M') }}
+            </div>
 
-          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
-            <button class="btn" type="button" onclick="verProposta({{ p.id }})">Visualizar</button>
-            <a class="btn" href="{{ url_for('baixar_proposta', proposal_id=p.id) }}">Baixar PDF</a>
-            <a class="btn" href="{{ url_for('contrato', proposal_id=p.id) }}">Emitir contrato</a>
+            <div class="actions">
+              <button class="btn" type="button" onclick="verProposta({{ p.id }})">Visualizar</button>
+              <a class="btn" href="{{ url_for('baixar_proposta', proposal_id=p.id) }}">Baixar PDF</a>
+              <a class="btn" href="{{ url_for('contrato', proposal_id=p.id) }}">Emitir contrato</a>
 
-            <form method="post" action="{{ url_for('excluir_proposta', proposal_id=p.id) }}" style="display:inline;">
-              <button class="btn danger" type="submit" onclick="return confirm('Excluir esta proposta?')">Excluir</button>
-            </form>
+              <form method="post" action="{{ url_for('excluir_proposta', proposal_id=p.id) }}" style="display:inline;">
+                <button class="btn danger" type="submit" onclick="return confirm('Excluir esta proposta?')">Excluir</button>
+              </form>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     {% endif %}
 
-    <div style="display:flex; justify-content:center; margin-top:12px;">
+    <div class="actions">
       <a class="btn" href="/gerador">Voltar</a>
     </div>
   </div>
+</div>
 
-  <!-- Modal simples -->
-  <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); align-items:center; justify-content:center; padding:18px;">
-    <div class="card" style="max-width:520px; width:100%;">
-      <div style="font-weight:900; margin-bottom:8px;">Dados da proposta</div>
-      <pre id="modalPre" style="white-space:pre-wrap; margin:0; opacity:.9;"></pre>
-      <div style="display:flex; justify-content:flex-end; margin-top:12px;">
-        <button class="btn" type="button" onclick="fecharModal()">Fechar</button>
-      </div>
+<!-- Modal -->
+<div id="modal" class="modal" style="display:none;">
+  <div class="modal-card">
+    <div class="modal-title">Dados da proposta</div>
+    <pre id="modalPre" class="modal-pre"></pre>
+    <div class="actions">
+      <button class="btn" type="button" onclick="fecharModal()">Fechar</button>
     </div>
   </div>
+</div>
 
-  <script>
-    async function verProposta(id){
-      try{
-        const r = await fetch(`/api/proposta/${id}`);
-        if(!r.ok) throw new Error("Erro ao carregar proposta.");
-        const data = await r.json();
-        document.getElementById("modalPre").textContent = JSON.stringify(data, null, 2);
-        document.getElementById("modal").style.display = "flex";
-      }catch(e){
-        alert(e.message || "Erro ao carregar proposta.");
-      }
+<script>
+  async function verProposta(id){
+    try{
+      const r = await fetch(`/api/proposta/${id}`);
+      if(!r.ok) throw new Error("Erro ao carregar proposta.");
+      const data = await r.json();
+      document.getElementById("modalPre").textContent = JSON.stringify(data, null, 2);
+      document.getElementById("modal").style.display = "flex";
+    }catch(e){
+      alert(e.message || "Erro ao carregar proposta.");
     }
-    function fecharModal(){
-      document.getElementById("modal").style.display = "none";
-    }
-  </script>
+  }
+  function fecharModal(){
+    document.getElementById("modal").style.display = "none";
+  }
+</script>
+
 {% endblock %}
