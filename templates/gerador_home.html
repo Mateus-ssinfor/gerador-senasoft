@@ -1,51 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="panel">
-  <div class="panel-head" style="text-align:center;">
-    <h1 class="panel-title">Gerador de Propostas</h1>
-    <p class="panel-subtitle">Proposta • Contrato • Promissória</p>
+<div class="h1" style="text-align:center; margin:0;">Gerador de Propostas</div>
+<p class="p" style="text-align:center; margin-top:6px;">Proposta • Contrato • Promissória</p>
+
+<div class="grid4" style="margin-top:14px;">
+  <div class="card">
+    <h3>Gerar Proposta</h3>
+    <p>Crie uma proposta em PDF com imagem e dados do cliente.</p>
+    <a class="btn" href="{{ url_for('proposta') }}">Nova proposta</a>
   </div>
 
-  <div class="panel-body">
-    <div class="grid grid-2">
-      <div class="item">
-        <div class="item-title">Gerar Proposta</div>
-        <div class="item-sub">Crie uma proposta em PDF com imagem e dados do cliente.</div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('proposta') }}">Nova proposta</a>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-title">Propostas recentes</div>
-        <div class="item-sub">Visualize, baixe, exclua e emita contrato a partir da proposta.</div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('recentes') }}">Abrir recentes</a>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-title">Emitir Contrato</div>
-        <div class="item-sub">Faça um contrato manual ou a partir de uma proposta.</div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('contrato_manual') }}">Emitir contrato</a>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="item-title">Promissória</div>
-        <div class="item-sub">Preencha tudo e anexe a foto do documento. Gera PDF e baixa na hora.</div>
-        <div class="actions">
-          <a class="btn" href="{{ url_for('promissoria') }}">Gerar promissória</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="actions" style="justify-content:center; margin-top:16px;">
-      <a class="btn" href="/hub">Voltar ao Hub</a>
-    </div>
+  <div class="card">
+    <h3>Propostas recentes</h3>
+    <p>Visualize, baixe, exclua e emita contrato a partir da proposta.</p>
+    <a class="btn" href="{{ url_for('recentes') }}">Abrir recentes</a>
   </div>
+
+  <div class="card">
+    <h3>Emitir Contrato</h3>
+    <p>Faça um contrato manual ou a partir de uma proposta.</p>
+    <a class="btn" href="{{ url_for('contrato_manual') }}">Emitir contrato</a>
+  </div>
+
+  <div class="card">
+    <h3>Promissória</h3>
+    <p>Preencha tudo e anexe a foto do documento. Gera PDF e baixa na hora.</p>
+    <a class="btn" href="{{ url_for('promissoria') }}">Gerar promissória</a>
+  </div>
+</div>
+
+<div style="display:flex; justify-content:center; margin-top:16px;">
+  <a class="btn" href="/hub" style="padding:12px 18px;">Voltar ao Hub</a>
 </div>
 
 {% endblock %}
