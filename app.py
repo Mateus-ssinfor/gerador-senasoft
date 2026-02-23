@@ -379,20 +379,33 @@ def create_app():
             return render_template("termo.html", erro=None)
 
         try:
-            dados = {
-                "DATA_RET": request.form.get("data_ret", "").strip(),
-                "HORA_RET": request.form.get("hora_ret", "").strip(),
-                "DATA_DEV": request.form.get("data_dev", "").strip(),
-                "HORA_DEV": request.form.get("hora_dev", "").strip(),
-                "NOME": request.form.get("nome", "").strip(),
-                "TELEFONE": request.form.get("telefone", "").strip(),
-                "ENDEREÇO": request.form.get("endereco", "").strip(),
-                "MARCA": request.form.get("marca", "").strip(),
-                "MODELO": request.form.get("modelo", "").strip(),
-                "SERIE": request.form.get("serie", "").strip(),
-                "ACESSORIO": request.form.get("acessorio", "").strip(),
-                "OBSERVAÇÃO": request.form.get("observacao", "").strip(),
-            }
+            eq = set(request.form.getlist("eq"))  # pode marcar mais de 1
+
+ck = "☑"
+un = "☐"
+
+dados = {
+    "DATA_RET": request.form.get("data_ret", "").strip(),
+    "HORA_RET": request.form.get("hora_ret", "").strip(),
+    "DATA_DEV": request.form.get("data_dev", "").strip(),
+    "HORA_DEV": request.form.get("hora_dev", "").strip(),
+
+    "NOME": request.form.get("nome", "").strip(),
+    "TELEFONE": request.form.get("telefone", "").strip(),
+    "ENDEREÇO": request.form.get("endereco", "").strip(),
+
+    # CHECKS do template
+    "CK_CPU": ck if "CPU" in eq else un,
+    "CK_NOT": ck if "NOT" in eq else un,
+    "CK_MON": ck if "MON" in eq else un,
+    "CK_IMP": ck if "IMP" in eq else un,
+
+    "MARCA": request.form.get("marca", "").strip(),
+    "MODELO": request.form.get("modelo", "").strip(),
+    "SERIE": request.form.get("serie", "").strip(),
+    "ACESSORIO": request.form.get("acessorio", "").strip(),
+    "OBSERVAÇÃO": request.form.get("observacao", "").strip(),
+}
 
             template_path = os.path.abspath("./assets/template_termo_retirada.docx")
             tmp_dir = os.path.join(app.config["STORAGE_DIR"], "_termos_tmp")

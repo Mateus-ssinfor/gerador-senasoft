@@ -66,3 +66,27 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/static/sw.js").catch(() => {});
   });
 }
+
+// Máscara: dd/mm/aa (digite só números: 200226 -> 20/02/26)
+function maskDate(el) {
+  el.addEventListener("input", () => {
+    let v = el.value.replace(/\D/g, "").slice(0, 6);
+    if (v.length >= 3) v = v.slice(0, 2) + "/" + v.slice(2);
+    if (v.length >= 6) v = v.slice(0, 5) + "/" + v.slice(5);
+    el.value = v;
+  });
+}
+
+// Máscara: hh:mm (digite só números: 1330 -> 13:30)
+function maskTime(el) {
+  el.addEventListener("input", () => {
+    let v = el.value.replace(/\D/g, "").slice(0, 4);
+    if (v.length >= 3) v = v.slice(0, 2) + ":" + v.slice(2);
+    el.value = v;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".mask-date").forEach(maskDate);
+  document.querySelectorAll(".mask-time").forEach(maskTime);
+});
