@@ -1,51 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="panel">
-  <div class="panel-head">
-    <h1 class="panel-title">Propostas recentes</h1>
-    <p class="panel-subtitle">Últimos 10 dias. Você pode visualizar, baixar, emitir contrato e excluir.</p>
-  </div>
+<div class="card" style="text-align:left;">
+  <h2 style="margin:0 0 6px;">Propostas recentes</h2>
+  <p style="margin:0 0 14px; opacity:.75;">Últimos 10 dias. Você pode visualizar, baixar, emitir contrato e excluir.</p>
 
-  <div class="panel-body">
-    {% if not items %}
-      <div class="empty">Nenhuma proposta ainda.</div>
-    {% else %}
-      <div class="list">
-        {% for p in items %}
-          <div class="item">
-            <div class="item-title">#{{ p.id }} — {{ p.client_name }}</div>
-            <div class="item-sub">
-              Criada: {{ p.created_at.strftime('%d/%m/%Y %H:%M') }} |
-              Expira: {{ p.expires_at.strftime('%d/%m/%Y %H:%M') }}
-            </div>
-
-            <div class="actions">
-              <button class="btn" type="button" onclick="verProposta({{ p.id }})">Visualizar</button>
-              <a class="btn" href="{{ url_for('baixar_proposta', proposal_id=p.id) }}">Baixar PDF</a>
-              <a class="btn" href="{{ url_for('contrato', proposal_id=p.id) }}">Emitir contrato</a>
-
-              <form method="post" action="{{ url_for('excluir_proposta', proposal_id=p.id) }}" style="display:inline;">
-                <button class="btn danger" type="submit" onclick="return confirm('Excluir esta proposta?')">Excluir</button>
-              </form>
-            </div>
+  {% if not items %}
+    <div class="empty">Nenhuma proposta ainda.</div>
+  {% else %}
+    <div class="list" style="display:flex; flex-direction:column; gap:12px;">
+      {% for p in items %}
+        <div class="card" style="padding:14px;">
+          <div style="font-weight:800; margin-bottom:6px;">#{{ p.id }} — {{ p.client_name }}</div>
+          <div style="opacity:.8; font-size:13px; margin-bottom:10px;">
+            Criada: {{ p.created_at.strftime('%d/%m/%Y %H:%M') }} |
+            Expira: {{ p.expires_at.strftime('%d/%m/%Y %H:%M') }}
           </div>
-        {% endfor %}
-      </div>
-    {% endif %}
 
-    <div class="actions">
-      <a class="btn" href="/gerador">Voltar</a>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn" type="button" onclick="verProposta({{ p.id }})">Visualizar</button>
+            <a class="btn" href="{{ url_for('baixar_proposta', proposal_id=p.id) }}">Baixar PDF</a>
+            <a class="btn" href="{{ url_for('contrato', proposal_id=p.id) }}">Emitir contrato</a>
+
+            <form method="post" action="{{ url_for('excluir_proposta', proposal_id=p.id) }}" style="display:inline;">
+              <button class="btn danger" type="submit" onclick="return confirm('Excluir esta proposta?')">Excluir</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
     </div>
+  {% endif %}
+
+  <div style="display:flex; gap:10px; margin-top:14px;">
+    <a class="btn" href="/gerador" style="justify-content:center; flex:1;">Voltar</a>
   </div>
 </div>
 
-<!-- Modal -->
-<div id="modal" class="modal" style="display:none;">
-  <div class="modal-card">
-    <div class="modal-title">Dados da proposta</div>
-    <pre id="modalPre" class="modal-pre"></pre>
-    <div class="actions">
+<!-- MODAL FLUTUANTE (CSS embutido pra não depender do app.css) -->
+<style>
+  #modalOverlay{
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(0,0,0,.65);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+  }
+  #modalCard{
+    width: min(720px, 95vw);
+    max-height: 85vh;
+    overflow: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(20,20,20,.92);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55);
+    padding: 16px;
+  }
+  #modalTitle{
+    font-weight: 900;
+    margin: 0 0 10px;
+    font-size: 16px;
+  }
+  #modalPre{
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    opacity: .9;
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+</style>
+
+<div id="modalOverlay" onclick="fecharModal(event)">
+  <div id="modalCard" onclick="event.stopPropagation()">
+    <div id="modalTitle">Dados da proposta</div>
+    <pre id="modalPre"></pre>
+    <div style="display:flex; justify-content:flex-end; margin-top:12px;">
       <button class="btn" type="button" onclick="fecharModal()">Fechar</button>
     </div>
   </div>
@@ -58,13 +95,15 @@
       if(!r.ok) throw new Error("Erro ao carregar proposta.");
       const data = await r.json();
       document.getElementById("modalPre").textContent = JSON.stringify(data, null, 2);
-      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalOverlay").style.display = "flex";
     }catch(e){
       alert(e.message || "Erro ao carregar proposta.");
     }
   }
-  function fecharModal(){
-    document.getElementById("modal").style.display = "none";
+
+  function fecharModal(ev){
+    // se clicar no fundo ou no botão, fecha
+    document.getElementById("modalOverlay").style.display = "none";
   }
 </script>
 
